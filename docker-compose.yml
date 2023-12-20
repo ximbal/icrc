@@ -2,20 +2,26 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      args:
-        mode: dev
+    build: .
     volumes:
       - .:/app
     command: uvicorn main:app --reload
     environment:
       LOG_LEVEL: debug
+      DB_HOST: db
+      DB_PORT: 5432
+      POSTGRES_DB: demo
+      POSTGRES_USER: demouser
+      POSTGRES_PASSWORD: password
+    depends_on:
+      - db
     ports:
       - "8000:8000"
+    networks:
+      - app-network
 
   db:
-    image: postgres:13
+    image: postgres:12
     environment:
       POSTGRES_DB: demo
       POSTGRES_USER: demouser
@@ -24,6 +30,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
 
 volumes:
   postgres_data:
