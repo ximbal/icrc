@@ -21,7 +21,7 @@ services:
       - app-network
 
   db:
-    image: postgres:12
+    image: postgres:13
     environment:
       POSTGRES_DB: demo
       POSTGRES_USER: demouser
