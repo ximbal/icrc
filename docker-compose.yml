@@ -5,7 +5,7 @@ services:
     build: .
     volumes:
       - .:/app
-    command: uvicorn main:app --reload
+    command: /bin/sh -c "/app/initialize_db.sh && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
     environment:
       LOG_LEVEL: debug
       DB_HOST: db
@@ -13,6 +13,7 @@ services:
       POSTGRES_DB: demo
       POSTGRES_USER: demouser
       POSTGRES_PASSWORD: password
+
     depends_on:
       - db
     ports:

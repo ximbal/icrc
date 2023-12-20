@@ -16,16 +16,8 @@ export LOG_LEVEL=debug
 echo "Starting Docker Compose services..."
 docker-compose up -d
 
-# Step 3: Wait for PostgreSQL to be ready (optional but recommended)
-echo "Waiting for PostgreSQL to be ready..."
-sleep 10 # Adjust the sleep time as necessary
-
-# Step 4: Execute DB Initialization Script
-echo "Initializing the database..."
-./create-db-and-tables.sh
-
-# Step 5: Run cURL command to interact with the Python service
+# Step 3: Run cURL command to interact with the Python service
 echo "Running cURL command to insert data into the database..."
-curl -X POST http://localhost:8000/path/to/your/api -H "Content-Type: application/json" -d '{"name": "test_store"}'
+curl -X POST http://localhost:8000/stores -H "Content-Type: application/json" -d '{"store_name": "test_store"}'
 
 echo "Setup complete!"

@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -15,6 +16,10 @@ DB_PORT = os.getenv('DB_PORT', '5432')
 DB_NAME = os.getenv('POSTGRES_DB', 'demo')
 DB_USER = os.getenv('POSTGRES_USER', 'demouser')
 DB_PASSWORD = os.getenv('POSTGRES_PASSWORD', 'password')
+
+# Pydantic model for store item
+class StoreItem(BaseModel):
+    store_name: str
 
 # Print MODE on startup if LOG_LEVEL is debug
 if LOG_LEVEL == 'debug':
@@ -32,11 +37,11 @@ def get_db_connection():
     return conn
 
 @app.post("/stores/")
-def add_store(store_name: str):
+def add_store(store_item: StoreItem):
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute("INSERT INTO store (name) VALUES (%s) RETURNING id;", (store_name,))
+        cursor.execute("INSERT INTO store (name) VALUES (%s) RETURNING id;", (store_item.store_name,))
         store_id = cursor.fetchone()['id']
         conn.commit()
     except Exception as e:
@@ -46,4 +51,4 @@ def add_store(store_name: str):
         cursor.close()
         conn.close()
 
-    return {"store_id": store_id, "store_name": store_name}
+    return {"store_id": store_id, "store_name": store_item.store_name}

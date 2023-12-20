@@ -19,5 +19,11 @@ WORKDIR /app
 # Install Python dependencies from requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy the database initialization script into the container
+COPY initialize_db.sh /app/initialize_db.sh
+
+# Give execute permissions to the script
+RUN chmod +x /app/initialize_db.sh
+
 # By default, run 'sleep infinity' to keep the container running
-CMD ["sleep", "infinity"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
