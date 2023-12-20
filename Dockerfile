@@ -7,8 +7,8 @@ ARG MODE=dev
 # Set the environment variable MODE to the value passed in the build argument
 ENV MODE=${MODE}
 
-# Update the package list and install PostgreSQL client version 12
-RUN apt-get update && apt-get install -y postgresql-client-12
+# Update the package list and install PostgreSQL client version
+RUN apt-get update && apt-get install -y postgresql-client
 
 # Copy the application code into the container at /app
 COPY . /app
