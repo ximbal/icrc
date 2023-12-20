@@ -22,7 +22,7 @@ sleep 10 # Adjust the sleep time as necessary
 
 # Step 4: Execute DB Initialization Script
 echo "Initializing the database..."
-./create-db-and-tables.sh
+./setup-database-and-tables.sh
 
 # Step 5: Run cURL command to interact with the Python service
 echo "Running cURL command to insert data into the database..."
